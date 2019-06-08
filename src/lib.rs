@@ -2,6 +2,7 @@ use difference::{Changeset, Difference};
 use regex::Regex;
 use std::collections::HashMap;
 use std::fmt::Write as FmtWrite;
+
 // diff injects html markup for additions and removals
 //
 //
@@ -15,33 +16,92 @@ pub fn diff(current: &str, old: &str) -> String {
     let mut collapser = CollapseHtml::new();
     let collapsed_current = collapser.collapse(current);
     let collapsed_old = collapser.collapse(old);
+    println!("current -{}-", collapsed_current);
+    println!("old -{}-", collapsed_old);
     let tag_regex = collapser.tag_regex();
     let Changeset { diffs, .. } = Changeset::new(&collapsed_current, &collapsed_old, " ");
     let mut first = true;
-    for c in &diffs {
-        match *c {
+    // before
+    //       same   rem     add
+    //  same -      space   space
+    //  rem  space  -       no
+    //  add  sapce  no      -
+    //
+    for i in 0..diffs.len() {
+        let prev = i.checked_sub(1).and_then(|x| diffs.get(x));
+        let next = i.checked_add(1).and_then(|x| diffs.get(x));
+
+        match prev {
+            Some(prev_match) => match prev_match {
+                Difference::Rem(_) => {
+                    //write!(t, " ").unwrap();
+                }
+                //Difference::Same(_) => {
+                //    println!("prespace");
+                //    write!(t, " ").unwrap();
+                //}
+                _ => {}
+            },
+            None => (),
+        }
+        match diffs[i] {
             Difference::Same(ref z) => {
-                println!("same 1 {}", z);
-                if !first {
+                // if it ends with a space it should be a html tag
+                println!("same 1 -{}-", collapser.expand(&z));
+                write!(t, "{}", z).unwrap();
+                if !z.ends_with(" ") {
                     write!(t, " ").unwrap();
                 }
-                write!(t, "{}", z).unwrap();
             }
             Difference::Rem(ref z) => {
                 let clean_z = tag_regex.replace_all(z, "");
-                println!("delete 1 -{}-", z);
-                println!("delete 2 -{}-", clean_z);
+                println!("delete 1 -{}-", collapser.expand(&z));
+                println!("delete 2 -{}-", collapser.expand(&clean_z));
                 if clean_z.trim().len() > 0 {
-                    write!(t, "<span class='deleted'> {}</span>", clean_z).unwrap();
+                    println!("<span class='deleted'>{}</span>", z);
+                    write!(t, "<span class='deleted'>{}</span>", z).unwrap();
+                    match next {
+                        Some(prev_match) => match prev_match {
+                            //Difference::Rem(_) => {
+                            //    write!(t, " ").unwrap();
+                            //}
+                            Difference::Same(_) => {
+                                write!(t, " ").unwrap();
+                            }
+                            _ => {}
+                        },
+                        None => (),
+                    }
                 } else {
                     println!("skipping {}", z);
                 }
             }
 
             Difference::Add(ref z) => {
-                write!(t, "<span class='inserted'> {}</span>", z).unwrap();
+                match diffs[i - 1] {
+                    Difference::Rem(_) => {
+                        //write!(t, " ").unwrap();
+                    }
+                    _ => {}
+                }
+                println!("add -{}-", collapser.expand(&z));
+                write!(t, "<span class='inserted'>{}</span>", z).unwrap();
+
+                match next {
+                    Some(prev_match) => match prev_match {
+                        //Difference::Rem(_) => {
+                        //    write!(t, " ").unwrap();
+                        //}
+                        Difference::Same(_) => {
+                            write!(t, " ").unwrap();
+                        }
+                        _ => {}
+                    },
+                    None => (),
+                }
             }
         }
+
         first = false;
     }
 
@@ -117,7 +177,12 @@ impl CollapseHtml {
     pub fn expand(&self, html: &str) -> String {
         let mut t = html.to_string();
         for (tag, replacement) in self.tags.iter() {
+            t = t.replace(&format!("  {}  ", replacement), tag);
+            t = t.replace(&format!(" {}  ", replacement), tag);
+            t = t.replace(&format!("  {} ", replacement), tag);
             t = t.replace(&format!(" {} ", replacement), tag);
+            t = t.replace(&format!("{} ", replacement), tag);
+            t = t.replace(&format!(" {}", replacement), tag);
         }
         t
     }
@@ -127,7 +192,7 @@ impl CollapseHtml {
         let the_list = CollapseHtml::tag_list(html);
         for tag in the_list {
             let replacement = self.get_replacement(tag.to_string());
-            t = t.replace(tag, &format!(" {}  ", replacement));
+            t = t.replace(tag, &format!("  {}  ", replacement));
         }
         println!("{}", t);
         t
@@ -141,7 +206,7 @@ mod tests {
     #[test]
     fn it_replaces() {
         let results = diff("a 1", "a 2");
-        let output = "a<span class='deleted'> 1</span><span class='inserted'> 2</span>\n";
+        let output = "a <span class='deleted'>1</span><span class='inserted'>2</span>\n";
         println!("{}", output);
 
         assert_eq!(results, output);

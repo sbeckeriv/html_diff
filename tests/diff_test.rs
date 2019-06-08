@@ -4,7 +4,7 @@ use pretty_assertions::assert_eq;
 #[test]
 fn it_replaces() {
     let results = diff("a 1", "a 2");
-    let output = "a<span class='deleted'> 1</span><span class='inserted'> 2</span>\n";
+    let output = "a <span class='deleted'>1</span><span class='inserted'>2</span>\n";
     println!("{}", output);
 
     assert_eq!(results, output);
@@ -44,12 +44,12 @@ fn it_adds_html() {
     let output = "
         <table class='mce-item-table'>
         <tbody>
-        <span class=\'inserted\'><tr>
+         <span class=\'inserted\'><tr> 
         <td>Feature Name:</td>
         <td>Time</td>
         <td><br></td>
         </tr>
-        </span></tbody>
+         </span></tbody>
         </table>
 ";
     let results = diff(base_html, new_html);
@@ -75,12 +75,12 @@ fn it_removes_html() {
     let output = "
         <table class='mce-item-table'>
         <tbody>
-        <span class=\'deleted\'><tr>
+         <span class=\'deleted\'><tr> 
         <td>Feature Name:</td>
         <td>Time</td>
         <td><br></td>
         </tr>
-        </span></tbody>
+         </span></tbody>
         </table>
 ";
     let results = diff(base_html, new_html);
@@ -113,12 +113,12 @@ fn it_shows_removed_added() {
       <table class='mce-item-table'>
         <tbody>
           <tr>
-            <td><span class=\"deleted\">Feature Name:</span></td>
-            <td><span class=\"deleted\">Time</span><span class=\"inserted\">This was changed</span></td>
-            <td><br></td>
+            <td><span class=\'deleted\'>Feature Name:</span><span class=\'inserted\'>This was changed</span></td>
+            <td><span class=\'deleted\'>Time</span> <br></td>
           </tr>
         </tbody>
-      </table>";
+      </table>
+";
 
     let results = diff(base_html, new_html);
     assert_eq!(results, expected_html);
@@ -143,8 +143,8 @@ fn it_does_not_change() {
 #[test]
 fn it_mid_html_replace() {
     let base_html = "<span><b> bold </b></span>";
-    let new_html = "<span> not bold </span>";
-    let output = "<span><span class='inserted'> not</span> bold </span>\n";
+    let new_html = "<span>not bold </span>";
+    let output = "<span><span class='inserted'>not</span> bold</span>\n";
     let results = diff(base_html, new_html);
     assert_eq!(results, output);
 }
