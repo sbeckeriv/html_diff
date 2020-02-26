@@ -44,7 +44,7 @@ fn it_adds_html() {
     let output = "
         <table class='mce-item-table'>
         <tbody>
-         <span class=\'inserted\'><tr> 
+         <span class=\'inserted\'><tr>
         <td>Feature Name:</td>
         <td>Time</td>
         <td><br></td>
@@ -75,7 +75,7 @@ fn it_removes_html() {
     let output = "
         <table class='mce-item-table'>
         <tbody>
-         <span class=\'deleted\'><tr> 
+         <span class=\'deleted\'><tr>
         <td>Feature Name:</td>
         <td>Time</td>
         <td><br></td>
@@ -114,7 +114,7 @@ fn it_shows_removed_added() {
         <tbody>
           <tr>
             <td><span class=\'deleted\'>Feature Name:</span><span class=\'inserted\'>This was changed</span></td>
-            <td><span class=\'deleted\'>Time</span> <br></td>
+            <td><span class=\'deleted\'>Time</span><br></td>
           </tr>
         </tbody>
       </table>

@@ -1,4 +1,5 @@
 use difference::{Changeset, Difference};
+use regex::Captures;
 use regex::Regex;
 use std::collections::HashMap;
 use std::fmt::Write as FmtWrite;
@@ -47,9 +48,10 @@ pub fn diff(current: &str, old: &str) -> String {
         match diffs[i] {
             Difference::Same(ref z) => {
                 // if it ends with a space it should be a html tag
-                println!("same 1 -{}-", collapser.expand(&z));
+                println!("same 1e -{}-", collapser.expand(&z));
+                println!("same 1 -{}- {}", z, z.len());
                 write!(t, "{}", z).unwrap();
-                if !z.ends_with(" ") {
+                if !z.ends_with(" ") && (z.len() > 0) {
                     write!(t, " ").unwrap();
                 }
             }
@@ -176,12 +178,24 @@ impl CollapseHtml {
 
     pub fn expand(&self, html: &str) -> String {
         let mut t = html.to_string();
+        // The replacement gets extra spaces but those might be cut off
+        // during the diff process.find a better way. replace space with value never used?
         for (tag, replacement) in self.tags.iter() {
+            //let mut tag_regex = "\\s\\{0-2\\}(".to_string();
+            //tag_regex.push_str(&replacement);
+            //tag_regex.push_str(")\\s\\{0-2\\}");
+            //let re = Regex::new(&tag_regex).unwrap();
+            //dbg!(&tag_regex);
+            //t = re
+            //    .replace(&t, |caps: &Captures| format!("{}", &tag))
+            //    .to_string();
             t = t.replace(&format!("  {}  ", replacement), tag);
             t = t.replace(&format!(" {}  ", replacement), tag);
             t = t.replace(&format!("  {} ", replacement), tag);
             t = t.replace(&format!(" {} ", replacement), tag);
+            t = t.replace(&format!("{}  ", replacement), tag);
             t = t.replace(&format!("{} ", replacement), tag);
+            t = t.replace(&format!("  {}", replacement), tag);
             t = t.replace(&format!(" {}", replacement), tag);
         }
         t
@@ -192,6 +206,7 @@ impl CollapseHtml {
         let the_list = CollapseHtml::tag_list(html);
         for tag in the_list {
             let replacement = self.get_replacement(tag.to_string());
+            // remember why i added spaces..
             t = t.replace(tag, &format!("  {}  ", replacement));
         }
         println!("{}", t);
