@@ -1,11 +1,20 @@
 [package]
 name = "html_diff"
-version = "0.1.0"
+version = "1.0.0"
 authors = ["becker <github@deathbyescalator.com>"]
 edition = "2018"
 
 [dependencies]
 regex = "1"
 difference = "2.0"
+actix-web = "2.0"
+actix-rt = "1.0"
+serde = "*"
+futures = "*"
+bytes = "*"
 [dev-dependencies]
 pretty_assertions = "*"
+
+[[bin]]
+name = "html_diff"
+doc = false

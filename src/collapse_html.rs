@@ -68,7 +68,6 @@ impl CollapseHtml {
     pub fn scrub_tags(&self, html: &str) -> String {
         let mut t = html.to_string();
         for (_, replacement) in self.tags.iter() {
-            dbg!(&replacement);
             t = t.replace(&format!("{}", replacement), "");
         }
         t

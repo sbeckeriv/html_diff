@@ -61,8 +61,6 @@ pub fn diff(current: &str, old: &str) -> String {
     let mut collapser = CollapseHtml::new();
     let collapsed_current = collapser.collapse(current);
     let collapsed_old = collapser.collapse(old);
-    println!("current -{}-", collapsed_current);
-    println!("old -{}-", collapsed_old);
     let changeset = Changeset::new(&collapsed_current, &collapsed_old, " ");
     let display = CustomDisplayChangeset {
         changeset,
