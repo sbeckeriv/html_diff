@@ -2,15 +2,18 @@
 <html lang="en">
   <head>
     <title>{% block title %}{{ title }} - Demo Site{% endblock %}</title>
-    {% block style %}
+    <style>
       .inserted { background-color: green}
       .deleted { background-color: red}
+    {% block style %}
       {{ style }}
     {% endblock %}
-
+    </style>
+    <javascript>
     {% block javascript %}
       {{ javascript }}
     {% endblock %}
+    </javascript>
   </head>
   <body>
     <div id="content">
