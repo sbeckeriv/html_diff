@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Diffed Values{% endblock %}
+
+{% block head %}
+  <style>
+.inserted { background-color: green}
+.deleted { background-color: red}
+  </style>
+{% endblock %}
+
+{% block content %}
+  <pre>{{ current|safe }}</pre>
+{% endblock %}
+

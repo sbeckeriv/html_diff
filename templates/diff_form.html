@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Diffed Values{% endblock %}
+
+{% block head %}
+  <style>
+  </style>
+{% endblock %}
+
+{% block content %}
+ <div class="container">
+  <form action="diff_form" method="post">
+    <label for="subject">Old</label>
+    <textarea id="old" name="old" placeholder="Old html" style="height:200px"></textarea>
+
+    <textarea id="current" name="current" placeholder="Current html" style="height:200px"></textarea>
+    <input type="submit" value="Submit">
+
+  </form>
+</div> 
+{% endblock %}
+
