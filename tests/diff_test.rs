@@ -2,25 +2,16 @@ use html_diff::diff;
 use pretty_assertions::assert_eq;
 
 #[test]
-fn it_replaces() {
-    let results = diff("a 1", "a 2");
-    let output = "a <span class='deleted'>1 </span><span class='inserted'>2 </span>";
-    println!("{}", output);
-
-    assert_eq!(results, output);
-}
-
-#[test]
 fn it_removes() {
     let results = diff("a 1 2", "a 2");
-    let output = "a <span class='deleted'>1 </span>2 ";
+    let output = " a <span class='deleted'>1</span> 2 ";
     assert_eq!(results, output);
 }
 
 #[test]
 fn it_adds() {
     let results = diff("a 2", "a 2 1");
-    let output = "a 2 <span class='inserted'>1 </span>";
+    let output = " a 2 <span class='inserted'>1</span>";
     assert_eq!(results, output);
 }
 
@@ -41,7 +32,7 @@ fn it_adds_html() {
         </tr>
         </tbody>
         </table>";
-    let output = "
+    let output = " 
         <table class='mce-item-table'>
         <tbody>
          <span class=\'inserted\'><tr>
@@ -49,7 +40,7 @@ fn it_adds_html() {
         <td>Time</td>
         <td><br></td>
         </tr>
-         </span></tbody>
+        </span></tbody>
         </table> ";
     let results = diff(base_html, new_html);
     assert_eq!(results, output);
@@ -71,10 +62,10 @@ fn it_removes_html() {
         </tr>
         </tbody>
         </table>";
-    let output = "
+    let output = " 
         <table class='mce-item-table'>
         <tbody>
-         <span class=\'deleted\'>Feature Name:  \n          Time </span></tbody>
+         <span class=\'deleted\'>Feature Name:  \n          Time</span></tbody>
         </table> ";
     let results = diff(base_html, new_html);
     assert_eq!(results, output);
@@ -102,12 +93,12 @@ fn it_shows_removed_added() {
         </tbody>
       </table>";
 
-    let expected_html = "
+    let expected_html = " 
       <table class='mce-item-table'>
         <tbody>
           <tr>
-            <td><span class=\'deleted\'>Feature Name: </span><span class=\'inserted\'>This was changed </span></td>
-            <td><span class=\'deleted\'>Time </span><br></td>
+            <td><span class=\'deleted\'>Feature Name:</span><span class=\'inserted\'>This was changed</span></td>
+            <td><span class=\'deleted\'>Time</span>  <br></td>
           </tr>
         </tbody>
       </table> ";
@@ -136,7 +127,7 @@ fn it_does_not_change() {
 fn it_mid_html_replace() {
     let base_html = "<span><b> bold </b></span>";
     let new_html = "<span>not bold </span>";
-    let output = "<span><span class='inserted'>not </span>bold </span> ";
+    let output = " <span><span class='inserted'>not</span> bold  </span> ";
     let results = diff(base_html, new_html);
     assert_eq!(results, output);
 }

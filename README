@@ -1,0 +1,16 @@
+HTML DIFFING
+
+Inspired by https://github.com/aha-app/track_changes diff html changes with new markup.
+
+
+Server
+
+Server runs with a json response and an html form view that displays the results.
+
+
+Docker
+
+Untested.
+
+Tested with:
+rustc 1.41.0-nightly (412f43ac5 2019-11-24)

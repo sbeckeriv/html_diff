@@ -55,6 +55,14 @@ impl CollapseHtml {
         t
     }
 
+    //
+    // Replace HTML tags with single characters so that diffing the HTML
+    // does not result in corrupted tags.
+    //
+    // This does not handle issues with unclosed tags, or tags that overlap.
+    //
+    // Based on the aglorithm here: http://code.google.com/p/google-diff-match-patch/wiki/Plaintext
+    //
     pub fn collapse(&mut self, html: &str) -> String {
         let mut t = html.to_string();
         for tag in CollapseHtml::tag_list(html) {

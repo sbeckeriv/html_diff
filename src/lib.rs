@@ -14,13 +14,13 @@ impl std::fmt::Display for CustomDisplayChangeset {
         for d in &self.changeset.diffs {
             match *d {
                 Difference::Same(ref x) => {
-                    write!(f, "{}{}", x, self.changeset.split).unwrap();
+                    write!(f, "{}{}{}", self.changeset.split, x, self.changeset.split).unwrap();
                 }
                 Difference::Add(ref x) => {
                     write!(
                         f,
-                        "<{} class='{}'{}>{}{}</{}>",
-                        "span", "inserted", "", x, self.changeset.split, "span",
+                        "<{} class='{}'{}>{}</{}>",
+                        "span", "inserted", "", x, "span",
                     )
                     .unwrap();
                 }
@@ -31,12 +31,11 @@ impl std::fmt::Display for CustomDisplayChangeset {
                     if y.chars().find(|c| !c.is_whitespace()).is_some() {
                         write!(
                             f,
-                            "<{} class='{}'{}>{}{}</{}>",
+                            "<{} class='{}'{}>{}</{}>",
                             "span",
                             "deleted",
                             "",
                             y.trim(),
-                            self.changeset.split,
                             "span",
                         )
                         .unwrap();
@@ -80,7 +79,7 @@ mod tests {
     #[test]
     fn it_replaces() {
         let results = diff("a 1", "a 2");
-        let output = "a <span class='deleted'>1 </span><span class='inserted'>2 </span>";
+        let output = " a <span class='deleted'>1</span><span class='inserted'>2</span>";
         println!("{}", output);
 
         assert_eq!(results, output);
