@@ -3,12 +3,20 @@
 {% block title %}Diffed Values{% endblock %}
 
 {% block style %}
+textarea{
+height:400px;
+width: 600px;
+}
 {% endblock %}
 
 {% block javascript %}
 {% endblock %}
 
 {% block content %}
-  <pre>{{ current|safe }}</pre>
+  <div class="content">{{ current|safe }}</div>
+  <br/>
+  <textarea>
+    {{current|safe}}
+  </textarea>
 {% endblock %}
 
