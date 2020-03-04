@@ -3,14 +3,14 @@ use pretty_assertions::assert_eq;
 
 #[test]
 fn it_removes() {
-    let results = diff("a 1 2", "a 2");
+    let results = diff("a 1 2", "a 2", None);
     let output = " a <span class='deleted'>1</span> 2 ";
     assert_eq!(results, output);
 }
 
 #[test]
 fn it_adds() {
-    let results = diff("a 2", "a 2 1");
+    let results = diff("a 2", "a 2 1", None);
     let output = " a 2 <span class='inserted'>1</span>";
     assert_eq!(results, output);
 }
@@ -42,7 +42,7 @@ fn it_adds_html() {
         </tr>
         </span></tbody>
         </table> ";
-    let results = diff(base_html, new_html);
+    let results = diff(base_html, new_html, None);
     assert_eq!(results, output);
 }
 #[test]
@@ -67,7 +67,7 @@ fn it_removes_html() {
         <tbody>
          <span class=\'deleted\'>Feature Name:  \n          Time</span></tbody>
         </table> ";
-    let results = diff(base_html, new_html);
+    let results = diff(base_html, new_html, None);
     assert_eq!(results, output);
 }
 #[test]
@@ -103,7 +103,7 @@ fn it_shows_removed_added() {
         </tbody>
       </table> ";
 
-    let results = diff(base_html, new_html);
+    let results = diff(base_html, new_html, None);
     assert_eq!(results, expected_html);
 }
 
@@ -120,7 +120,7 @@ fn it_does_not_change() {
         </tbody>
       </table>";
 
-    let results = diff(base_html, base_html);
+    let results = diff(base_html, base_html, None);
     assert_eq!(results.trim(), base_html.trim());
 }
 #[test]
@@ -128,6 +128,6 @@ fn it_mid_html_replace() {
     let base_html = "<span><b> bold </b></span>";
     let new_html = "<span>not bold </span>";
     let output = " <span><span class='inserted'>not</span> bold  </span> ";
-    let results = diff(base_html, new_html);
+    let results = diff(base_html, new_html, None);
     assert_eq!(results, output);
 }
