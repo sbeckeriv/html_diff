@@ -2,13 +2,9 @@ extern crate html_diff;
 use actix_web::middleware;
 use actix_web::{web, App, HttpResponse, HttpServer, Responder, Result};
 use askama::Template;
-use futures;
 use serde::{Deserialize, Serialize};
 
-#[macro_use]
 extern crate log;
-
-use log::Level;
 
 // Health check page to make sure we are up
 async fn health_check() -> impl Responder {
@@ -38,7 +34,7 @@ struct DiffResultsTemplate {
 }
 // Diffing method via form
 async fn diff_results(form: web::Form<Diff>) -> Result<HttpResponse> {
-    let diff = html_diff::diff(&form.old, &form.current);
+    let diff = html_diff::diff(&form.old, &form.current, None);
     let template = DiffResultsTemplate { current: diff }.render().unwrap();
     Ok(HttpResponse::Ok().content_type("text/html").body(template))
 }
@@ -49,7 +45,7 @@ struct DiffResponse {
 }
 // Diffing method via json
 async fn diff(form: web::Json<Diff>) -> Result<HttpResponse> {
-    let diff = html_diff::diff(&form.old, &form.current);
+    let diff = html_diff::diff(&form.old, &form.current, None);
     Ok(HttpResponse::Ok().json(DiffResponse { result: diff }))
 }
 
