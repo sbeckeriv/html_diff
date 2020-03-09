@@ -14,7 +14,7 @@ apt-get update; \
 # match nightly slim
     FROM debian:buster-slim
     WORKDIR /app
-    COPY --from=0 /app/target/release/html_diff.
+    COPY --from=0 /app/target/release/html_diff .
     RUN set -ex; \ 
     apt-get update; \
       apt-get install -y --no-install-recommends \
