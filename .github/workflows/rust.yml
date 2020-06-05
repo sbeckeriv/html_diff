@@ -72,5 +72,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/release/html_diff_darwin
-          asset_name: html_diff_darwin
+          asset_name: html_diff
           tag: build-${{ github.ref }}
