@@ -10,9 +10,13 @@ that are not present in the JSON.
 
 > cargo run --release
 
+`curl -X POST -d '{"old":"<span>g the ‘why’, ‘what,’</span>", "current":"<span>g the ‘whys’, ‘whats,’</span>"}' -H "Content-Type: application/json" -vvvv 127.0.0.1:8000/diff`
+
 Docker
 
 Untested but it builds.
 
 Tested with:
 rustc 1.41.0-nightly (412f43ac5 2019-11-24)
+
+releases build with beta
