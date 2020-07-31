@@ -33,7 +33,7 @@ impl std::fmt::Display for CustomDisplayChangeset {
                     let y = self
                         .collapser
                         .scrub_tags(&format!("{}{}", x, self.changeset.split));
-                    if y.chars().find(|c| !c.is_whitespace()).is_some() {
+                    if y.chars().any(|c| !c.is_whitespace()) {
                         write!(
                             f,
                             "<{} class='{}'{}>{}</{}>",

@@ -39,7 +39,7 @@ impl CollapseHtml {
                     }
                 }
             }
-            self.current_hash[index_add] = self.current_hash[index_add] + 1;
+            self.current_hash[index_add] += 1;
             self.tags.insert(tag, replacement.clone());
             replacement
         }
@@ -76,7 +76,7 @@ impl CollapseHtml {
     pub fn scrub_tags(&self, html: &str) -> String {
         let mut t = html.to_string();
         for (_, replacement) in self.tags.iter() {
-            t = t.replace(&format!("{}", replacement), "");
+            t = t.replace(&replacement.to_string(), "");
         }
         t
     }

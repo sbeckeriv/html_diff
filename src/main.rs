@@ -1,6 +1,6 @@
 extern crate html_diff;
 use actix_web::middleware;
-use actix_web::{web, App, HttpResponse, HttpServer, Responder, Result};
+use actix_web::{web, App, FromRequest, HttpResponse, HttpServer, Responder, Result};
 use askama::Template;
 use serde::{Deserialize, Serialize};
 
@@ -55,6 +55,8 @@ async fn main() -> std::io::Result<()> {
     env_logger::init();
     HttpServer::new(|| {
         App::new()
+            .app_data(web::Form::<Diff>::configure(|cfg| cfg.limit(4000097)))
+            .app_data(web::Json::<Diff>::configure(|cfg| cfg.limit(40000000097)))
             .wrap(middleware::Logger::default())
             .wrap(middleware::Compress::default())
             .route("/diff", web::post().to(diff))
