@@ -1,5 +1,6 @@
 mod collapse_html;
 pub use crate::collapse_html::CollapseHtml;
+use wasm_bindgen::prelude::*;
 
 use difference::{Changeset, Difference};
 use std::fmt::Write as FmtWrite;
@@ -51,6 +52,8 @@ impl std::fmt::Display for CustomDisplayChangeset {
         Ok(())
     }
 }
+#[wasm_bindgen]
+#[derive(Debug)]
 pub struct DiffConfig {
     html_tag: String,
     separator: String,
@@ -79,6 +82,7 @@ impl Default for DiffConfig {
 // let output = " a <span class='deleted'>1</span><span class='inserted'>2</span>\n";
 // assert_eq!(results, output);
 // ```
+#[wasm_bindgen]
 pub fn diff(current: &str, old: &str, config: Option<DiffConfig>) -> String {
     let config = config.unwrap_or_default();
     let mut t = String::with_capacity(old.len());
