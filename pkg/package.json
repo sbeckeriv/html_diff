@@ -1,0 +1,15 @@
+{
+  "name": "html_diff",
+  "collaborators": [
+    "becker <github@deathbyescalator.com>"
+  ],
+  "version": "1.0.0",
+  "files": [
+    "html_diff_bg.wasm",
+    "html_diff.js",
+    "html_diff.d.ts"
+  ],
+  "module": "html_diff.js",
+  "types": "html_diff.d.ts",
+  "sideEffects": false
+}

@@ -7,17 +7,21 @@ edition = "2018"
 [dependencies]
 regex = "1"
 difference = "2.0"
-actix-web = "2.0"
-actix-rt = "1.0"
-serde = "*"
-futures = "*"
-bytes = "*"
-askama = { version = "*", features = ["with-actix-web", "mime", "mime_guess"] }
-env_logger="*"
-log="*"
-[dev-dependencies]
-pretty_assertions = "*"
+#actix-web = "2.0"
+#actix-rt = "1.0"
+#serde = "*"
+#futures = "*"
+#bytes = "*"
+#askama = { version = "*", features = ["with-actix-web", "mime", "mime_guess"] }
+#env_logger="*"
+#log="*"
+wasm-bindgen = "*"
+
+[lib]
+crate-type = ["cdylib"]
 
 [[bin]]
 name = "html_diff"
 doc = false
+[profile.release]
+lto = true
